@@ -9,8 +9,8 @@
 }
 .formWrapper   h2{
     color: #000000;
-    margin-bottom: 12px;
-    font-size: 2rem;
+    margin-bottom: 6px;
+    font-size: 1.5rem;
     font-weight: bold;
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
@@ -21,7 +21,7 @@
   justify-content: center;
   background-color: rgb(146, 199, 245);
   border-radius: 16px;
-padding: 2rem 4rem;
+padding: 1rem 2rem;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
   width: 100%;
   max-width: 400px;
@@ -29,7 +29,7 @@ padding: 2rem 4rem;
 
 .formWrapper form input {
   width: 100%;
-  padding: 10px;
+  padding: 6px;
   margin: 4px 0;
   border: 1px solid #ffffff;
   border-radius: 5px;
@@ -47,8 +47,8 @@ padding: 2rem 4rem;
 }
 .formWrapper form input[type="submit"] {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 6px;
+  margin: 6px 0;
   border: none;
   border-radius: 5px;
   background-color: #ffffff;
@@ -61,7 +61,7 @@ padding: 2rem 4rem;
   background-color:  white;
   color: #d12b31;
   font-weight: bold;
-  padding: 10px;
+  padding: 6px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
