@@ -39,6 +39,12 @@ function Register() {
         data
       );
       console.log("data after", data);
+      setName('');
+      setEmail('');
+      setPassword('');
+      setRePassword('');
+      setPhone('');
+      setErrors([]);
       console.log(res);
     } catch (error) {
       console.error("Error submitting form", error);
