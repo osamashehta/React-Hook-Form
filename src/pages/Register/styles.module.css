@@ -6,9 +6,10 @@
   height: 100vh;
   background-image: url('../../assets/76.webp');
   background-size: cover;
+  /* background-color: rgb(146, 199, 245); */
 }
 .formWrapper   h2{
-    color: #000000;
+    color: #d51b1b;
     margin-bottom: 6px;
     font-size: 1.5rem;
     font-weight: bold;
@@ -19,7 +20,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgb(146, 199, 245);
+  
   border-radius: 16px;
 padding: 1rem 2rem;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
@@ -32,15 +33,17 @@ padding: 1rem 2rem;
   padding: 6px;
   margin: 4px 0;
   border: 1px solid #ffffff;
+  background-color: #ffffff;
+
   border-radius: 5px;
 }
 .formWrapper form input:focus {
   outline: none;
-  border-color: #d12b31;
+  border-color: #2ed12b;
 
 }
 .formWrapper form label {
-  color: #000000;
+  color: #033744;
   font-weight: bold;
   display: block;
   width: 100%; 
@@ -72,4 +75,10 @@ padding: 1rem 2rem;
   color: rgb(214, 79, 79);
   font-weight: thin;
   margin: 4px 0;
+}
+.link{
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: bold;  
+  margin-top: 1rem;
 }

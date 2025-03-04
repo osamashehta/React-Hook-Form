@@ -1,7 +1,10 @@
+import { useState } from "react";
 import styles from "./styles.module.css";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { BeatLoader, FadeLoader } from "react-spinners";
 
 type TFormData = {
   name: string;
@@ -11,41 +14,44 @@ type TFormData = {
   phone: string;
 };
 function Register() {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-    getValues
+    getValues,
   } = useForm<TFormData>();
 
   const sendData = async (data: TFormData) => {
+    setLoading(true);
     try {
       const res = await axios.post(
         "https://ecommerce.routemisr.com/api/v1/auth/signup",
         data
       );
       console.log("data after", data);
-
+      localStorage.setItem("token", res.data.token);
       console.log(res);
-      if(res.data.message === "success"){
-
+      if (res.data.message === "success") {
         toast.success("User registered successfully");
+        navigate("/login");
       }
       reset();
+      setLoading(false);
     } catch (error: any) {
       console.error("Error submitting form", error);
       toast.error(error.response?.data?.message);
+      setLoading(false);
     }
   };
 
   return (
     <div className={styles.formWrapper}>
       <h2>Register</h2>
-      
+
       <form onSubmit={handleSubmit(sendData)}>
-
-
         <label htmlFor="name">User Name</label>
         <input
           id="name"
@@ -66,7 +72,6 @@ function Register() {
           <p className={styles.error}>{errors.name.message}</p>
         )}
 
-
         <label htmlFor="email">Email</label>
         <input
           id="email"
@@ -81,14 +86,13 @@ function Register() {
           })}
         />
 
-{errors.email && errors.email.type === "required" && (
+        {errors.email && errors.email.type === "required" && (
           <p className={styles.error}>{errors.email.message}</p>
         )}
 
         {errors.email && errors.email.type === "pattern" && (
           <p className={styles.error}>{errors.email.message}</p>
-        ) }
-
+        )}
 
         <label htmlFor="password">Password</label>
         <input
@@ -148,9 +152,12 @@ function Register() {
           <p className={styles.error}>{errors.phone.message}</p>
         )}
         <button type="submit" className={styles.button}>
-          Register
+          {loading ? <BeatLoader color="#39e228" size={10} /> : "Register"}
         </button>
       </form>
+      <Link to="/login" className={styles.link}>
+        You have an account
+      </Link>
     </div>
   );
 }
