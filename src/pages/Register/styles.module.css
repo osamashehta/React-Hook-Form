@@ -67,3 +67,9 @@ padding: 1rem 2rem;
   cursor: pointer;
   margin-top: 16px;
 }
+
+.error {
+  color: rgb(214, 79, 79);
+  font-weight: thin;
+  margin: 4px 0;
+}
