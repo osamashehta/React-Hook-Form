@@ -4,7 +4,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { BeatLoader, FadeLoader } from "react-spinners";
+import { BeatLoader } from "react-spinners";
 
 type TFormData = {
   name: string;
@@ -22,7 +22,9 @@ function Register() {
     formState: { errors },
     reset,
     getValues,
-  } = useForm<TFormData>();
+  } = useForm<TFormData>({
+    mode: "onBlur", 
+  });
 
   const sendData = async (data: TFormData) => {
     setLoading(true);
@@ -35,7 +37,7 @@ function Register() {
       localStorage.setItem("token", res.data.token);
       console.log(res);
       if (res.data.message === "success") {
-        toast.success("User registered successfully");
+        toast.success(res.data.message);
         navigate("/login");
       }
       reset();

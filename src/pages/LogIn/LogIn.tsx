@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./styles.module.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { BeatLoader, FadeLoader } from "react-spinners";
+import { BeatLoader } from "react-spinners";
 type TFormData = {
   email: string;
   password: string;
@@ -32,7 +32,7 @@ function LogIn() {
 
       console.log(res);
       if (res.data.message === "success") {
-        toast.success("User registered successfully");
+        toast.success(res.data.message);
         localStorage.setItem("name", res.data.user.name);
         navigate("/");
       }
@@ -93,7 +93,7 @@ function LogIn() {
         </button>
       </form>
       <Link to="/register" className={styles.link}>
-        You have an account
+        You don't have an account
       </Link>
     </div>
   );
