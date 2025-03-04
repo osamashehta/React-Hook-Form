@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BeatLoader } from "react-spinners";
+import { z, ZodType } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type TFormData = {
   name: string;
@@ -13,6 +15,31 @@ type TFormData = {
   rePassword: string;
   phone: string;
 };
+const UserSchema: ZodType<TFormData> = z
+  .object({
+    name: z
+      .string()
+      .min(5, { message: "Username must be at least 5 characters" }),
+    email: z
+      .string()
+      .email({ message: "Email is required" })
+      .regex(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, {
+        message: "Enter a valid email",
+      }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" }),
+    rePassword: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" }),
+    phone: z
+      .string()
+      .regex(/^(01[0-2,5])[0-9]{8}$/, { message: "Enter Egyptian number" }),
+  })
+  .refine((data) => data.password == data.rePassword, {
+    message: "The passwords do not match",
+    path: ["rePassword"],
+  });
 function Register() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -21,8 +48,8 @@ function Register() {
     handleSubmit,
     formState: { errors },
     reset,
-    getValues,
   } = useForm<TFormData>({
+    resolver: zodResolver(UserSchema),
     mode: "onBlur", 
   });
 
@@ -59,18 +86,9 @@ function Register() {
           id="name"
           type="text"
           placeholder="Username"
-          {...register("name", {
-            required: "This field is required",
-            minLength: {
-              value: 5,
-              message: "Username must be at least 5 characters",
-            },
-          })}
+          {...register("name")}
         />
-        {errors.name && errors.name.type === "required" && (
-          <p className={styles.error}>{errors.name.message}</p>
-        )}
-        {errors.name && errors.name.type === "minLength" && (
+       {errors.name && (
           <p className={styles.error}>{errors.name.message}</p>
         )}
 
@@ -79,20 +97,10 @@ function Register() {
           id="email"
           type="email"
           placeholder="Email"
-          {...register("email", {
-            required: "This field is required",
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-              message: "Invalid email address",
-            },
-          })}
+          {...register("email")}
         />
 
-        {errors.email && errors.email.type === "required" && (
-          <p className={styles.error}>{errors.email.message}</p>
-        )}
-
-        {errors.email && errors.email.type === "pattern" && (
+{errors.email && (
           <p className={styles.error}>{errors.email.message}</p>
         )}
 
@@ -101,18 +109,9 @@ function Register() {
           id="password"
           type="password"
           placeholder="Password"
-          {...register("password", {
-            required: "This field is required",
-            minLength: {
-              value: 8,
-              message: "Password must be at least 8 characters",
-            },
-          })}
+          {...register("password")}
         />
-        {errors.password && errors.password.type === "required" && (
-          <p className={styles.error}>{errors.password.message}</p>
-        )}
-        {errors.password && errors.password.type === "minLength" && (
+       {errors.password && (
           <p className={styles.error}>{errors.password.message}</p>
         )}
 
@@ -121,16 +120,9 @@ function Register() {
           id="rePassword"
           type="password"
           placeholder="Confirm Password"
-          {...register("rePassword", {
-            required: "This field is required",
-            validate: (value) =>
-              value === getValues("password") || "The passwords do not match",
-          })}
+          {...register("rePassword")}
         />
-        {errors.rePassword && errors.rePassword.type === "required" && (
-          <p className={styles.error}>{errors.rePassword.message}</p>
-        )}
-        {errors.rePassword && errors.rePassword.type === "validate" && (
+        {errors.rePassword && (
           <p className={styles.error}>{errors.rePassword.message}</p>
         )}
 
@@ -139,20 +131,12 @@ function Register() {
           id="phone"
           type="tel"
           placeholder="Phone"
-          {...register("phone", {
-            required: "This field is required",
-            pattern: {
-              value: /^(01[0-2,5])[0-9]{8}$/,
-              message: "Enter Egyptian number",
-            },
-          })}
+          {...register("phone")}
         />
-        {errors.phone && errors.phone.type === "required" && (
+     {errors.phone && (
           <p className={styles.error}>{errors.phone.message}</p>
         )}
-        {errors.phone && errors.phone.type === "pattern" && (
-          <p className={styles.error}>{errors.phone.message}</p>
-        )}
+
         <button type="submit" className={styles.button}>
           {loading ? <BeatLoader color="#39e228" size={10} /> : "Register"}
         </button>
