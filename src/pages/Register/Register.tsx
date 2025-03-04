@@ -22,7 +22,7 @@ const UserSchema: ZodType<TFormData> = z
       .min(5, { message: "Username must be at least 5 characters" }),
     email: z
       .string()
-      .email({ message: "Email is required" })
+      .min(1, { message: "Email is required" })
       .regex(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, {
         message: "Enter a valid email",
       }),
@@ -50,7 +50,7 @@ function Register() {
     reset,
   } = useForm<TFormData>({
     resolver: zodResolver(UserSchema),
-    mode: "onBlur", 
+    mode: "onBlur",
   });
 
   const sendData = async (data: TFormData) => {
@@ -60,18 +60,18 @@ function Register() {
         "https://ecommerce.routemisr.com/api/v1/auth/signup",
         data
       );
-      console.log("data after", data);
-      localStorage.setItem("token", res.data.token);
-      console.log(res);
       if (res.data.message === "success") {
         toast.success(res.data.message);
         navigate("/login");
       }
       reset();
       setLoading(false);
-    } catch (error: any) {
-      console.error("Error submitting form", error);
-      toast.error(error.response?.data?.message);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        toast.error(error.response?.data?.message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
       setLoading(false);
     }
   };
@@ -88,9 +88,7 @@ function Register() {
           placeholder="Username"
           {...register("name")}
         />
-       {errors.name && (
-          <p className={styles.error}>{errors.name.message}</p>
-        )}
+        {errors.name && <p className={styles.error}>{errors.name.message}</p>}
 
         <label htmlFor="email">Email</label>
         <input
@@ -100,9 +98,7 @@ function Register() {
           {...register("email")}
         />
 
-{errors.email && (
-          <p className={styles.error}>{errors.email.message}</p>
-        )}
+        {errors.email && <p className={styles.error}>{errors.email.message}</p>}
 
         <label htmlFor="password">Password</label>
         <input
@@ -111,7 +107,7 @@ function Register() {
           placeholder="Password"
           {...register("password")}
         />
-       {errors.password && (
+        {errors.password && (
           <p className={styles.error}>{errors.password.message}</p>
         )}
 
@@ -133,9 +129,7 @@ function Register() {
           placeholder="Phone"
           {...register("phone")}
         />
-     {errors.phone && (
-          <p className={styles.error}>{errors.phone.message}</p>
-        )}
+        {errors.phone && <p className={styles.error}>{errors.phone.message}</p>}
 
         <button type="submit" className={styles.button}>
           {loading ? <BeatLoader color="#39e228" size={10} /> : "Register"}

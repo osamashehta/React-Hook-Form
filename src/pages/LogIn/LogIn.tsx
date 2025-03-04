@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
+import { z, ZodType } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 type TFormData = {
   email: string;
   password: string;
@@ -13,12 +15,27 @@ function LogIn() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
+  const UserSchema: ZodType<TFormData> = z.object({
+    email: z
+      .string()
+      .min(1, { message: "Email is required" })
+      .regex(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, {
+        message: "Enter a valid email",
+      }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" }),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<TFormData>();
+  } = useForm<TFormData>({
+    resolver: zodResolver(UserSchema),
+    mode: "onBlur",
+  });
 
   const sendData = async (data: TFormData) => {
     setLoading(true);
@@ -28,9 +45,7 @@ function LogIn() {
         "https://ecommerce.routemisr.com/api/v1/auth/signin",
         data
       );
-      console.log("data after", data);
 
-      console.log(res);
       if (res.data.message === "success") {
         toast.success(res.data.message);
         localStorage.setItem("name", res.data.user.name);
@@ -39,7 +54,6 @@ function LogIn() {
       reset();
       setLoading(false);
     } catch (error) {
-      console.error("Error submitting form", error);
       if (axios.isAxiosError(error) && error.response) {
         toast.error(error.response.data.message);
       } else {
@@ -58,33 +72,19 @@ function LogIn() {
           id="email"
           type="email"
           placeholder="Email"
-          {...register("email", {
-            required: "Email is required",
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-              message: "Invalid email address",
-            },
-          })}
+          {...register("email")}
         />
-        {errors.email && errors.email.type === "required" && (
-          <p className={styles.error}>{errors.email.message}</p>
-        )}
 
-        {errors.email && errors.email.type === "pattern" && (
-          <p className={styles.error}>{errors.email.message}</p>
-        )}
+        {errors.email && <p className={styles.error}>{errors.email.message}</p>}
 
         <label htmlFor="password">Password</label>
         <input
           id="password"
           type="password"
           placeholder="Password"
-          {...register("password", { required: "Password is required" })}
+          {...register("password")}
         />
-        {errors.password && errors.password.type === "required" && (
-          <p className={styles.error}>{errors.password.message}</p>
-        )}
-        {errors.password && errors.password.type === "minLength" && (
+        {errors.password && (
           <p className={styles.error}>{errors.password.message}</p>
         )}
 

@@ -6,16 +6,18 @@
   height: 100vh;
   background-image: url("../../assets/76.webp");
   background-size: cover;
-  /* background-color: rgb(146, 199, 245); */
 }
 .formWrapper h2 {
   color: #d51b1b;
+
   margin-bottom: 6px;
   font-size: 1.5rem;
   font-weight: bold;
   font-family: Georgia, "Times New Roman", Times, serif;
 }
 .formWrapper form {
+  background-color: rgb(146, 199, 245);
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -71,8 +73,8 @@
 }
 
 .error {
-  color: rgb(214, 79, 79);
-  font-weight: thin;
+  color: #d51b1b;
+  font-weight: 600;
   margin: 4px 0;
 }
 .link {
