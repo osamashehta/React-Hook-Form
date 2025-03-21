@@ -62,7 +62,7 @@ function Register() {
       );
       if (res.data.message === "success") {
         toast.success(res.data.message);
-        navigate("/login");
+        navigate("/");
       }
       reset();
       setLoading(false);
@@ -135,7 +135,7 @@ function Register() {
           {loading ? <BeatLoader color="#39e228" size={10} /> : "Register"}
         </button>
       </form>
-      <Link to="/login" className={styles.link}>
+      <Link to="/" className={styles.link}>
         You have an account
       </Link>
     </div>

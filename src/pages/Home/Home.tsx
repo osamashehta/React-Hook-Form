@@ -10,7 +10,7 @@ function Home() {
 
     </div>
     <div className="flex gap-12 justify-center">
-    <Link to="/login" className="text-3xl text-blue-600 ">Login</Link>
+    <Link to="/" className="text-3xl text-blue-600 ">Login</Link>
     <Link to="/register" className="text-3xl text-blue-600 ">Register</Link>
     </div>
     </>

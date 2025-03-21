@@ -49,7 +49,7 @@ function LogIn() {
       if (res.data.message === "success") {
         toast.success(res.data.message);
         localStorage.setItem("name", res.data.user.name);
-        navigate("/");
+        navigate("/home");
       }
       reset();
       setLoading(false);
